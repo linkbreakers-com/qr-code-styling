@@ -8,7 +8,7 @@ import { RequiredOptions } from "./QROptions";
 import gradientTypes from "../constants/gradientTypes";
 import shapeTypes from "../constants/shapeTypes";
 import { DotType, QRCode, FilterFunction, Gradient, Window } from "../types";
-import { Image } from "canvas";
+import type { NodeCanvasImage } from "../types/nodeCanvas";
 
 const squareMask = [
   [1, 1, 1, 1, 1, 1, 1],
@@ -40,7 +40,7 @@ export default class QRSVG {
   _cornersDotClipPath?: SVGElement;
   _options: RequiredOptions;
   _qr?: QRCode;
-  _image?: HTMLImageElement | Image;
+  _image?: HTMLImageElement | NodeCanvasImage;
   _imageUri?: string;
   _instanceId: number;
 
@@ -457,12 +457,14 @@ export default class QRSVG {
       if (options.nodeCanvas?.loadImage) {
         options.nodeCanvas
           .loadImage(options.image)
-          .then((image: Image) => {
+          .then((image: NodeCanvasImage) => {
             this._image = image;
             if (this._options.imageOptions.saveAsBlob) {
-              const canvas = options.nodeCanvas?.createCanvas( this._image.width,  this._image.height);
-              canvas?.getContext('2d')?.drawImage(image, 0, 0);
-              this._imageUri = canvas?.toDataURL();
+              const canvas = options.nodeCanvas?.createCanvas(this._image.width, this._image.height);
+              canvas?.getContext("2d")?.drawImage(image, 0, 0);
+              if (canvas?.toDataURL) {
+                this._imageUri = canvas.toDataURL();
+              }
             }
             resolve();
           })
@@ -481,6 +483,7 @@ export default class QRSVG {
           }
           resolve();
         };
+        image.onerror = reject;
         image.src = options.image;
       }
     });
