@@ -1,11 +1,13 @@
-# QR Code Styling
-[![Version](https://img.shields.io/npm/v/qr-code-styling.svg)](https://www.npmjs.org/package/qr-code-styling)
+# QR Code Styling (Linkbreakers fork)
+[![Version](https://img.shields.io/npm/v/linkbreakers-qr-code-styling.svg)](https://www.npmjs.com/package/linkbreakers-qr-code-styling)
 
 JavaScript library for generating QR codes with a logo and styling.
 
+> This is the Linkbreakers maintained fork of the original [`qr-code-styling`](https://github.com/kozakdenys/qr-code-styling) project so that we can ship improvements to npm under our own namespace.
+
 Try it here https://qr-code-styling.com
 
-If you have issues / suggestions / notes / questions, please open an issue or contact me. Let's create a cool library together.
+If you have issues / suggestions / notes / questions, please open an issue in [this repository](https://github.com/linkbreakers-com/qr-code-styling/issues).
 ### Examples
 <p float="left">
 <img style="display:inline-block" src="https://raw.githubusercontent.com/kozakdenys/qr-code-styling/master/src/assets/facebook_example_new.png" width="240" />
@@ -27,7 +29,7 @@ If you would like to use additional stiles, you can connect extensions.
 ### Installation
 
 ```
-npm install qr-code-styling
+npm install linkbreakers-qr-code-styling
 ```
 
 ### Usage
@@ -38,7 +40,7 @@ npm install qr-code-styling
 <head>
     <meta charset="UTF-8">
     <title>QR Code Styling</title>
-    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/linkbreakers-qr-code-styling@latest/lib/qr-code-styling.js"></script>
 </head>
 <body>
 <div id="canvas"></div>
