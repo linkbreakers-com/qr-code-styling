@@ -1,6 +1,6 @@
 {
   "name": "linkbreakers-qr-code-styling",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Linkbreakers maintained QR code styling library with logo and theme support",
   "main": "lib/qr-code-styling.js",
   "types": "lib/index.d.ts",
@@ -38,6 +38,7 @@
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
+    "build:clean": "rm -rf lib && pnpm run build",
     "build": "webpack --mode=production --config webpack.config.build.js",
     "build:dev": "webpack --mode=development --config webpack.config.build.js",
     "test": "jest",

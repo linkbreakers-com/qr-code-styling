@@ -190,20 +190,21 @@ export default class QRDot {
     });
   }
 
-  // Circuit chip dots are regular pads with occasional traces to adjacent modules for a circuit vibe.
   _drawCircuitChip({ x, y, size, getNeighbor }: DrawArgs): void {
     const centerX = x + size / 2;
     const centerY = y + size / 2;
     const padRadius = (size / 2) * 0.9;
     const connectorThickness = Math.max(size * 0.16, 1);
     const connectorHalf = connectorThickness / 2;
-    const connectorLength = size / 2;
+    const padGap = Math.max(size - padRadius * 2, size * 0.02);
     const columnIndex = Math.round(x / size);
     const rowIndex = Math.round(y / size);
     const commands: string[] = [];
+
     const addRectPath = (startX: number, startY: number, width: number, height: number): void => {
       commands.push(`M ${startX} ${startY} h ${width} v ${height} h ${-width} Z`);
     };
+
     const shouldLink = (offsetX: number, offsetY: number): boolean => {
       if (!getNeighbor || !getNeighbor(offsetX, offsetY)) {
         return false;
@@ -218,16 +219,16 @@ export default class QRDot {
     };
 
     if (shouldLink(-1, 0)) {
-      addRectPath(centerX - connectorLength, centerY - connectorHalf, connectorLength, connectorThickness);
+      addRectPath(centerX - padRadius - padGap, centerY - connectorHalf, padGap, connectorThickness);
     }
     if (shouldLink(1, 0)) {
-      addRectPath(centerX, centerY - connectorHalf, connectorLength, connectorThickness);
+      addRectPath(centerX + padRadius, centerY - connectorHalf, padGap, connectorThickness);
     }
     if (shouldLink(0, -1)) {
-      addRectPath(centerX - connectorHalf, centerY - connectorLength, connectorThickness, connectorLength);
+      addRectPath(centerX - connectorHalf, centerY - padRadius - padGap, connectorThickness, padGap);
     }
     if (shouldLink(0, 1)) {
-      addRectPath(centerX - connectorHalf, centerY, connectorThickness, connectorLength);
+      addRectPath(centerX - connectorHalf, centerY + padRadius, connectorThickness, padGap);
     }
 
     commands.push(
@@ -242,6 +243,9 @@ export default class QRDot {
       draw: () => {
         this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
         this._element.setAttribute("d", commands.join(" "));
+        this._element.setAttribute("fill-rule", "evenodd");
+        this._element.setAttribute("clip-rule", "evenodd");
+        this._element.setAttribute("stroke", "none");
       }
     });
   }
