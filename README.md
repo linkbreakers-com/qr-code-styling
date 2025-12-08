@@ -144,8 +144,10 @@ Property | Type                                                                 
 -------- |--------------------------------------------------------------------------------|---------------|-------------------
 color    | string                                                                         | `'#000'`      |Color of QR dots
 gradient | object                                                                         |               |Gradient of QR dots
-type     | string (`'rounded' 'dots' 'classy' 'classy-rounded' 'square' 'extra-rounded'`) | `'square'`    |Style of QR dots
+type     | string (`'rounded' 'dots' 'bubbly-dots' 'classy' 'classy-rounded' 'square' 'extra-rounded'`) | `'square'`    |Style of QR dots
 roundSize| boolean                                                                        | true          |Whether to round dots size to integer. `true` value might create extra margin around qr code. If `false`, [shape-rendering="crispEdges"](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/shape-rendering#crispedges) will be applied to SVG element.
+
+`'bubbly-dots'` keeps the standard dot silhouette but varies the radius so a QR code can mix slightly larger and smaller circles.
 
 `options.backgroundOptions` structure
 
@@ -160,7 +162,7 @@ Property| Type                                       |Default Value|Description
 --------|--------------------------------------------|-------------|-----------------
 color   | string                                     |             |Color of Corners Square
 gradient| object                                     |             |Gradient of Corners Square
-type    | string (`'dot' 'square' 'extra-rounded' 'rounded' 'dots' 'classy' 'classy-rounded'`) |             |Style of Corners Square
+type    | string (`'dot' 'square' 'extra-rounded' 'rounded' 'dots' 'bubbly-dots' 'classy' 'classy-rounded'`) |             |Style of Corners Square
 
 `options.cornersDotOptions` structure
 
@@ -168,7 +170,7 @@ Property| Type                       |Default Value|Description
 --------|----------------------------|-------------|-----------------
 color   | string                     |             |Color of Corners Dot
 gradient| object                     |             |Gradient of Corners Dot
-type    | string (`'dot' 'square' 'rounded' 'dots' 'classy' 'classy-rounded' 'extra-rounded'`) |             |Style of Corners Dot
+type    | string (`'dot' 'square' 'rounded' 'dots' 'bubbly-dots' 'classy' 'classy-rounded' 'extra-rounded'`) |             |Style of Corners Dot
 
 Gradient structure
 

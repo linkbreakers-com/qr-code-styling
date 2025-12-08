@@ -21,6 +21,9 @@ export default class QRDot {
       case dotTypes.dots:
         drawFunction = this._drawDot;
         break;
+      case dotTypes.bubblyDots:
+        drawFunction = this._drawBubblyDots;
+        break;
       case dotTypes.classy:
         drawFunction = this._drawClassy;
         break;
@@ -161,8 +164,42 @@ export default class QRDot {
     this._basicDot({ x, y, size, rotation: 0 });
   }
 
+  _drawBubblyDots({ x, y, size, getNeighbor }: DrawArgs): void {
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const neighborCount = getNeighbor
+      ? +getNeighbor(-1, 0) + +getNeighbor(1, 0) + +getNeighbor(0, -1) + +getNeighbor(0, 1)
+      : 0;
+    const sizeBias = neighborCount === 0 ? 0.1 : neighborCount >= 3 ? -0.1 : 0;
+    const radius = (size / 2) * this._bubblyScale(x, y, sizeBias);
+
+    this._rotateFigure({
+      x,
+      y,
+      size,
+      rotation: 0,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        this._element.setAttribute("cx", String(cx));
+        this._element.setAttribute("cy", String(cy));
+        this._element.setAttribute("r", String(radius));
+      }
+    });
+  }
+
   _drawSquare({ x, y, size }: DrawArgs): void {
     this._basicSquare({ x, y, size, rotation: 0 });
+  }
+
+  _bubblyScale(x: number, y: number, bias = 0): number {
+    const noise = this._bubblyNoise(x, y);
+    const scale = 0.75 + noise * 0.35 + bias;
+    return Math.min(1.15, Math.max(0.55, scale));
+  }
+
+  _bubblyNoise(x: number, y: number): number {
+    const seed = Math.sin(12.9898 * x + 78.233 * y) * 43758.5453123;
+    return seed - Math.floor(seed);
   }
 
   _drawRounded({ x, y, size, getNeighbor }: DrawArgs): void {
