@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(npm ls:*)",
+      "Bash(grep:*)",
+      "Bash(npm view:*)",
+      "Bash(npm search:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(./node_modules/.bin/tsc:*)",
+      "Bash(pnpm exec tsc:*)",
+      "Bash(npm test)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm rm:*)",
+      "Bash(pnpm dev:fast:*)",
+      "Bash(ls:*)",
+      "Bash(npx webpack:*)",
+      "Bash(pkill:*)",
+      "Bash(pnpm run:*)",
+      "Bash(pnpm ls:*)",
+      "Bash(pnpm why:*)",
+      "Bash(ln:*)",
+      "Bash(readlink:*)"
+    ],
+    "deny": []
+  }
+}

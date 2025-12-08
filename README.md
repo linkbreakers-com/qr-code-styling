@@ -97,7 +97,7 @@ const qrCode = new QRCodeStyling({
   height: 512,
   type: "png",
   data: JSON.stringify({ action: "invite", token: "abc123" }),
-  dotsOptions: { type: "extra-rounded", color: "#101828" },
+  dotsOptions: { type: "circuit-chip", color: "#101828" },
   backgroundOptions: { color: "transparent" }
 });
 
@@ -115,7 +115,7 @@ Every option supported upstream still works here, plus Linkbreakers-only enhance
 | --- | --- |
 | `width`, `height`, `type`, `margin`, `shape` | Canvas size, file format (`svg`, `png`, `canvas`), margin handling, and experimental circle mode. |
 | `qrOptions` | Access to the underlying `qrcode-generator` settings (error correction, mode, mask pattern, etc.). |
-| `dotsOptions`, `cornersSquareOptions`, `cornersDotOptions` | Choose between `square`, `rounded`, `extra-rounded`, `classy`, `classy-rounded`, `bubbly-dots`, `dots`, and gradient mixes. |
+| `dotsOptions`, `cornersSquareOptions`, `cornersDotOptions` | Choose between `square`, `rounded`, `extra-rounded`, `classy`, `classy-rounded`, `bubbly-dots`, `circuit-chip`, `dots`, and gradient mixes. |
 | `backgroundOptions` | Solid colors or gradients that sit behind the QR pixels.
 | `imageOptions` | Control image size, margins, CORS settings, background cleanup, and blob embedding for SVG exports.
 

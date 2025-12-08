@@ -24,6 +24,9 @@ export default class QRDot {
       case dotTypes.bubblyDots:
         drawFunction = this._drawBubblyDots;
         break;
+      case dotTypes.circuitChip:
+        drawFunction = this._drawCircuitChip;
+        break;
       case dotTypes.classy:
         drawFunction = this._drawClassy;
         break;
@@ -183,6 +186,66 @@ export default class QRDot {
         this._element.setAttribute("cx", String(cx));
         this._element.setAttribute("cy", String(cy));
         this._element.setAttribute("r", String(radius));
+      }
+    });
+  }
+
+  _drawCircuitChip({ x, y, size, getNeighbor }: DrawArgs): void {
+    const centerX = x + size / 2;
+    const centerY = y + size / 2;
+    const padRadius = (size / 2) * 0.9;
+    const connectorThickness = Math.max(size * 0.16, 1);
+    const connectorHalf = connectorThickness / 2;
+    const padGap = Math.max(size - padRadius * 2, size * 0.02);
+    const columnIndex = Math.round(x / size);
+    const rowIndex = Math.round(y / size);
+    const commands: string[] = [];
+
+    const addRectPath = (startX: number, startY: number, width: number, height: number): void => {
+      commands.push(`M ${startX} ${startY} h ${width} v ${height} h ${-width} Z`);
+    };
+
+    const shouldLink = (offsetX: number, offsetY: number): boolean => {
+      if (!getNeighbor || !getNeighbor(offsetX, offsetY)) {
+        return false;
+      }
+      const neighborColumn = columnIndex + offsetX;
+      const neighborRow = rowIndex + offsetY;
+      const baseColumn = Math.min(columnIndex, neighborColumn);
+      const baseRow = Math.min(rowIndex, neighborRow);
+      const directionSeed = offsetX !== 0 ? 1 : 2;
+      const hash = Math.abs(baseRow * 73856093 + baseColumn * 19349663 + directionSeed * 83492791);
+      return hash % 3 === 0;
+    };
+
+    if (shouldLink(-1, 0)) {
+      addRectPath(centerX - padRadius - padGap, centerY - connectorHalf, padGap, connectorThickness);
+    }
+    if (shouldLink(1, 0)) {
+      addRectPath(centerX + padRadius, centerY - connectorHalf, padGap, connectorThickness);
+    }
+    if (shouldLink(0, -1)) {
+      addRectPath(centerX - connectorHalf, centerY - padRadius - padGap, connectorThickness, padGap);
+    }
+    if (shouldLink(0, 1)) {
+      addRectPath(centerX - connectorHalf, centerY + padRadius, connectorThickness, padGap);
+    }
+
+    commands.push(
+      `M ${centerX + padRadius} ${centerY} A ${padRadius} ${padRadius} 0 1 0 ${centerX - padRadius} ${centerY} A ${padRadius} ${padRadius} 0 1 0 ${centerX + padRadius} ${centerY} Z`
+    );
+
+    this._rotateFigure({
+      x,
+      y,
+      size,
+      rotation: 0,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this._element.setAttribute("d", commands.join(" "));
+        this._element.setAttribute("fill-rule", "evenodd");
+        this._element.setAttribute("clip-rule", "evenodd");
+        this._element.setAttribute("stroke", "none");
       }
     });
   }

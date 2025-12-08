@@ -1,5 +1,5 @@
 import { DOMWindow, JSDOM } from "jsdom";
-import nodeCanvas  from "canvas";
+import type { NodeCanvasModule } from "./nodeCanvas";
 
 export interface UnknownObject {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,6 +9,7 @@ export interface UnknownObject {
 export type DotType =
   | "dots"
   | "bubbly-dots"
+  | "circuit-chip"
   | "rounded"
   | "classy"
   | "classy-rounded"
@@ -123,7 +124,7 @@ export type Options = {
   margin?: number;
   data?: string;
   image?: string;
-  nodeCanvas?: typeof nodeCanvas;
+  nodeCanvas?: NodeCanvasModule;
   jsdom?: typeof JSDOM;
   qrOptions?: {
     typeNumber?: TypeNumber;

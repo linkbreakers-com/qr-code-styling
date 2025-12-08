@@ -7,8 +7,9 @@ import QRCornerDot, { availableCornerDotTypes } from "../figures/cornerDot/QRCor
 import { RequiredOptions } from "./QROptions";
 import gradientTypes from "../constants/gradientTypes";
 import shapeTypes from "../constants/shapeTypes";
+import dotTypes from "../constants/dotTypes";
 import { DotType, QRCode, FilterFunction, Gradient, Window } from "../types";
-import { Image } from "canvas";
+import type { NodeCanvasImage } from "../types/nodeCanvas";
 
 const squareMask = [
   [1, 1, 1, 1, 1, 1, 1],
@@ -40,7 +41,7 @@ export default class QRSVG {
   _cornersDotClipPath?: SVGElement;
   _options: RequiredOptions;
   _qr?: QRCode;
-  _image?: HTMLImageElement | Image;
+  _image?: HTMLImageElement | NodeCanvasImage;
   _imageUri?: string;
   _instanceId: number;
 
@@ -206,6 +207,17 @@ export default class QRSVG {
     this._dotsClipPath.setAttribute("id", `clip-path-dot-color-${this._instanceId}`);
     this._defs.appendChild(this._dotsClipPath);
 
+    const dotColorId = `dot-color-${this._instanceId}`;
+    const hasGradient = Boolean(options.dotsOptions?.gradient);
+    const dotFill = hasGradient ? `url('#${dotColorId}')` : options.dotsOptions.color;
+    const drawCircuitOverlay = options.dotsOptions.type === dotTypes.circuitChip;
+    const circuitOverlayGroup = drawCircuitOverlay
+      ? this._window.document.createElementNS("http://www.w3.org/2000/svg", "g")
+      : undefined;
+    if (circuitOverlayGroup) {
+      circuitOverlayGroup.setAttribute("fill", dotFill);
+    }
+
     this._createColor({
       options: options.dotsOptions?.gradient,
       color: options.dotsOptions.color,
@@ -214,7 +226,7 @@ export default class QRSVG {
       y: 0,
       height: options.height,
       width: options.width,
-      name: `dot-color-${this._instanceId}`
+      name: dotColorId
     });
 
     for (let row = 0; row < count; row++) {
@@ -238,7 +250,11 @@ export default class QRSVG {
         );
 
         if (dot._element && this._dotsClipPath) {
+          const overlayNode = circuitOverlayGroup ? (dot._element.cloneNode(true) as SVGElement) : undefined;
           this._dotsClipPath.appendChild(dot._element);
+          if (overlayNode && circuitOverlayGroup) {
+            circuitOverlayGroup.appendChild(overlayNode);
+          }
         }
       }
     }
@@ -292,10 +308,18 @@ export default class QRSVG {
             }
           );
           if (dot._element && this._dotsClipPath) {
+            const overlayNode = circuitOverlayGroup ? (dot._element.cloneNode(true) as SVGElement) : undefined;
             this._dotsClipPath.appendChild(dot._element);
+            if (overlayNode && circuitOverlayGroup) {
+              circuitOverlayGroup.appendChild(overlayNode);
+            }
           }
         }
       }
+    }
+
+    if (circuitOverlayGroup) {
+      this._element.appendChild(circuitOverlayGroup);
     }
   }
 
@@ -457,12 +481,14 @@ export default class QRSVG {
       if (options.nodeCanvas?.loadImage) {
         options.nodeCanvas
           .loadImage(options.image)
-          .then((image: Image) => {
+          .then((image: NodeCanvasImage) => {
             this._image = image;
             if (this._options.imageOptions.saveAsBlob) {
-              const canvas = options.nodeCanvas?.createCanvas( this._image.width,  this._image.height);
-              canvas?.getContext('2d')?.drawImage(image, 0, 0);
-              this._imageUri = canvas?.toDataURL();
+              const canvas = options.nodeCanvas?.createCanvas(this._image.width, this._image.height);
+              canvas?.getContext("2d")?.drawImage(image, 0, 0);
+              if (canvas?.toDataURL) {
+                this._imageUri = canvas.toDataURL();
+              }
             }
             resolve();
           })
@@ -481,6 +507,7 @@ export default class QRSVG {
           }
           resolve();
         };
+        image.onerror = reject;
         image.src = options.image;
       }
     });

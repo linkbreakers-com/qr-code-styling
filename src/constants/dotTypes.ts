@@ -3,6 +3,7 @@ import { DotTypes } from "../types";
 export default {
   dots: "dots",
   bubblyDots: "bubbly-dots",
+  circuitChip: "circuit-chip",
   rounded: "rounded",
   classy: "classy",
   classyRounded: "classy-rounded",
