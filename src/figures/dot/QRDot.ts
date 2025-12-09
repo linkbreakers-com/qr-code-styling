@@ -193,10 +193,10 @@ export default class QRDot {
   _drawCircuitChip({ x, y, size, getNeighbor }: DrawArgs): void {
     const centerX = x + size / 2;
     const centerY = y + size / 2;
-    const padRadius = (size / 2) * 0.9;
-    const connectorThickness = Math.max(size * 0.16, 1);
+    const padRadius = (size / 2) * 0.8;
+    const connectorThickness = Math.max(size * 0.24, 1);
     const connectorHalf = connectorThickness / 2;
-    const padGap = Math.max(size - padRadius * 2, size * 0.02);
+    const padGap = Math.max(size - padRadius * 2, size * 0.08);
     const columnIndex = Math.round(x / size);
     const rowIndex = Math.round(y / size);
     const commands: string[] = [];

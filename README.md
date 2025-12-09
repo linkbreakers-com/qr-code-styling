@@ -8,10 +8,10 @@ new dot shapes, additional corner styles, richer gradients, smarter image handli
 ---
 
 ## Why Linkbreakers built this fork
-- We use QR codes everywhere—from marketing campaigns to onboarding flows—and needed a toolkit that could keep up with us.
+- We operate a QR code tracking service that generates thousands of highly customized QR codes in parallel for our customers.
 - Running massive batches in Node.js demanded more control over memory usage, rendering speed, and streaming downloads.
-- Designers asked for expressive shapes and fine-grained styling knobs to match any visual identity.
-- Our customers expect consistent assets across dashboard previews, PDFs, and live pages, so the API must behave the same on the server and in the browser.
+- Our customers require extensive customization options and unique styling capabilities that the original library couldn't provide.
+- We needed optimized libraries that could handle high-volume parallel processing while maintaining consistent quality across dashboard previews, PDFs, and live pages.
 
 The result is a fork we actively maintain, document, and publish under the `linkbreakers-qr-code-styling` package name. If you want help building QR-driven experiences, [talk with us](https://linkbreakers.com).
 
