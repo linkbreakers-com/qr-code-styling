@@ -158,20 +158,27 @@ export default class QRCornerSquare {
         this._element.setAttribute("clip-rule", "evenodd");
         this._element.setAttribute("fill-rule", "evenodd");
         
-        let outerPath = `M ${cx + radius} ${cy}`;
-        let innerPath = `M ${cx + innerRadius} ${cy}`;
-        
+        // Outer hexagon (clockwise)
+        let path = `M ${cx + radius} ${cy}`;
         for (let i = 1; i <= 6; i++) {
           const angle = (i * Math.PI) / 3;
           const outerX = cx + radius * Math.cos(angle);
           const outerY = cy + radius * Math.sin(angle);
+          path += ` L ${outerX} ${outerY}`;
+        }
+        path += " Z";
+        
+        // Inner hexagon (counter-clockwise for hole)
+        path += ` M ${cx + innerRadius} ${cy}`;
+        for (let i = 6; i >= 1; i--) {
+          const angle = (i * Math.PI) / 3;
           const innerX = cx + innerRadius * Math.cos(angle);
           const innerY = cy + innerRadius * Math.sin(angle);
-          outerPath += ` L ${outerX} ${outerY}`;
-          innerPath += ` L ${innerX} ${innerY}`;
+          path += ` L ${innerX} ${innerY}`;
         }
+        path += " Z";
         
-        this._element.setAttribute("d", outerPath + " Z " + innerPath + " Z");
+        this._element.setAttribute("d", path);
       }
     });
   }
@@ -191,20 +198,27 @@ export default class QRCornerSquare {
         this._element.setAttribute("clip-rule", "evenodd");
         this._element.setAttribute("fill-rule", "evenodd");
         
-        let outerPath = `M ${cx + radius} ${cy}`;
-        let innerPath = `M ${cx + innerRadius} ${cy}`;
-        
+        // Outer octagon (clockwise)
+        let path = `M ${cx + radius} ${cy}`;
         for (let i = 1; i <= 8; i++) {
           const angle = (i * Math.PI) / 4;
           const outerX = cx + radius * Math.cos(angle);
           const outerY = cy + radius * Math.sin(angle);
+          path += ` L ${outerX} ${outerY}`;
+        }
+        path += " Z";
+        
+        // Inner octagon (counter-clockwise for hole)
+        path += ` M ${cx + innerRadius} ${cy}`;
+        for (let i = 8; i >= 1; i--) {
+          const angle = (i * Math.PI) / 4;
           const innerX = cx + innerRadius * Math.cos(angle);
           const innerY = cy + innerRadius * Math.sin(angle);
-          outerPath += ` L ${outerX} ${outerY}`;
-          innerPath += ` L ${innerX} ${innerY}`;
+          path += ` L ${innerX} ${innerY}`;
         }
+        path += " Z";
         
-        this._element.setAttribute("d", outerPath + " Z " + innerPath + " Z");
+        this._element.setAttribute("d", path);
       }
     });
   }

@@ -1,6 +1,6 @@
 {
   "name": "linkbreakers-qr-code-styling",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Linkbreakers maintained QR code styling library with logo and theme support",
   "main": "lib/qr-code-styling.js",
   "types": "lib/index.d.ts",
