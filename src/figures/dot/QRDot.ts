@@ -39,6 +39,12 @@ export default class QRDot {
       case dotTypes.extraRounded:
         drawFunction = this._drawExtraRounded;
         break;
+      case dotTypes.hexagon:
+        drawFunction = this._drawHexagon;
+        break;
+      case dotTypes.octagon:
+        drawFunction = this._drawOctagon;
+        break;
       case dotTypes.square:
       default:
         drawFunction = this._drawSquare;
@@ -413,5 +419,63 @@ export default class QRDot {
     }
 
     this._basicSquare({ x, y, size, rotation: 0 });
+  }
+
+  _basicHexagon(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const radius = size * 0.45; // Slightly smaller for better spacing
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        
+        let path = `M ${cx + radius} ${cy}`;
+        for (let i = 1; i <= 6; i++) {
+          const angle = (i * Math.PI) / 3;
+          const pointX = cx + radius * Math.cos(angle);
+          const pointY = cy + radius * Math.sin(angle);
+          path += ` L ${pointX} ${pointY}`;
+        }
+        path += " Z";
+        
+        this._element.setAttribute("d", path);
+      }
+    });
+  }
+
+  _basicOctagon(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const radius = size * 0.45; // Slightly smaller for better spacing
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        
+        let path = `M ${cx + radius} ${cy}`;
+        for (let i = 1; i <= 8; i++) {
+          const angle = (i * Math.PI) / 4;
+          const pointX = cx + radius * Math.cos(angle);
+          const pointY = cy + radius * Math.sin(angle);
+          path += ` L ${pointX} ${pointY}`;
+        }
+        path += " Z";
+        
+        this._element.setAttribute("d", path);
+      }
+    });
+  }
+
+  _drawHexagon({ x, y, size }: DrawArgs): void {
+    this._basicHexagon({ x, y, size, rotation: 0 });
+  }
+
+  _drawOctagon({ x, y, size }: DrawArgs): void {
+    this._basicOctagon({ x, y, size, rotation: 0 });
   }
 }

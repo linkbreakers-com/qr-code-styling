@@ -26,6 +26,12 @@ export default class QRCornerSquare {
       case cornerSquareTypes.extraRounded:
         drawFunction = this._drawExtraRounded;
         break;
+      case cornerSquareTypes.hexagon:
+        drawFunction = this._drawHexagon;
+        break;
+      case cornerSquareTypes.octagon:
+        drawFunction = this._drawOctagon;
+        break;
       case cornerSquareTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -134,5 +140,78 @@ export default class QRCornerSquare {
 
   _drawExtraRounded({ x, y, size, rotation }: DrawArgs): void {
     this._basicExtraRounded({ x, y, size, rotation });
+  }
+
+
+  _basicHexagon(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const dotSize = size / 7;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const radius = size / 2;
+    const innerRadius = radius - dotSize;
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this._element.setAttribute("clip-rule", "evenodd");
+        
+        let outerPath = `M ${cx + radius} ${cy}`;
+        let innerPath = `M ${cx + innerRadius} ${cy}`;
+        
+        for (let i = 1; i <= 6; i++) {
+          const angle = (i * Math.PI) / 3;
+          const outerX = cx + radius * Math.cos(angle);
+          const outerY = cy + radius * Math.sin(angle);
+          const innerX = cx + innerRadius * Math.cos(angle);
+          const innerY = cy + innerRadius * Math.sin(angle);
+          outerPath += ` L ${outerX} ${outerY}`;
+          innerPath += ` L ${innerX} ${innerY}`;
+        }
+        
+        this._element.setAttribute("d", outerPath + " Z " + innerPath + " Z");
+      }
+    });
+  }
+
+  _basicOctagon(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const dotSize = size / 7;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const radius = size / 2;
+    const innerRadius = radius - dotSize;
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this._element.setAttribute("clip-rule", "evenodd");
+        
+        let outerPath = `M ${cx + radius} ${cy}`;
+        let innerPath = `M ${cx + innerRadius} ${cy}`;
+        
+        for (let i = 1; i <= 8; i++) {
+          const angle = (i * Math.PI) / 4;
+          const outerX = cx + radius * Math.cos(angle);
+          const outerY = cy + radius * Math.sin(angle);
+          const innerX = cx + innerRadius * Math.cos(angle);
+          const innerY = cy + innerRadius * Math.sin(angle);
+          outerPath += ` L ${outerX} ${outerY}`;
+          innerPath += ` L ${innerX} ${innerY}`;
+        }
+        
+        this._element.setAttribute("d", outerPath + " Z " + innerPath + " Z");
+      }
+    });
+  }
+
+  _drawHexagon({ x, y, size, rotation }: DrawArgs): void {
+    this._basicHexagon({ x, y, size, rotation });
+  }
+
+  _drawOctagon({ x, y, size, rotation }: DrawArgs): void {
+    this._basicOctagon({ x, y, size, rotation });
   }
 }

@@ -8,5 +8,7 @@ export default {
   classy: "classy",
   classyRounded: "classy-rounded",
   square: "square",
-  extraRounded: "extra-rounded"
+  extraRounded: "extra-rounded",
+  hexagon: "hexagon",
+  octagon: "octagon"
 } as DotTypes;

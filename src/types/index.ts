@@ -14,9 +14,11 @@ export type DotType =
   | "classy"
   | "classy-rounded"
   | "square"
-  | "extra-rounded";
-export type CornerDotType = "dot" | "square" | DotType;
-export type CornerSquareType = "dot" | "square" | "extra-rounded" | DotType;
+  | "extra-rounded"
+  | "hexagon"
+  | "octagon";
+export type CornerDotType = "dot" | "square" | "hexagon" | "octagon" | DotType;
+export type CornerSquareType = "dot" | "square" | "extra-rounded" | "hexagon" | "octagon" | DotType;
 export type FileExtension = "svg" | "png" | "jpeg" | "webp";
 export type GradientType = "radial" | "linear";
 export type DrawType = "canvas" | "svg";
