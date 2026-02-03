@@ -5,5 +5,6 @@ export default {
   square: "square",
   hexagon: "hexagon",
   octagon: "octagon",
-  teardrop: "teardrop"
+  teardrop: "teardrop",
+  star: "star"
 } as CornerDotTypes;

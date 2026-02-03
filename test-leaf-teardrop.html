@@ -36,6 +36,11 @@
         <div id="qr-both"></div>
     </div>
 
+    <div class="qr-container">
+        <h3>Star Corners (Outer & Inner)</h3>
+        <div id="qr-star"></div>
+    </div>
+
     <script src="./lib/qr-code-styling.js"></script>
     <script>
         // Test with leaf corner square
@@ -97,6 +102,26 @@
             }
         });
         qrBoth.append(document.getElementById("qr-both"));
+
+        // Test with star corner square & dot
+        const qrStar = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com",
+            dotsOptions: {
+                color: "#4CAF50",
+                type: "rounded"
+            },
+            cornersSquareOptions: {
+                color: "#2196F3",
+                type: "square"
+            },
+            cornersDotOptions: {
+                color: "#FF5722",
+                type: "star"
+            }
+        });
+        qrStar.append(document.getElementById("qr-star"));
     </script>
 </body>
 </html>

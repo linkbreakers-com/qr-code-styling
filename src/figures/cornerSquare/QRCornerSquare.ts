@@ -267,4 +267,5 @@ export default class QRCornerSquare {
   _drawLeaf({ x, y, size, rotation }: DrawArgs): void {
     this._basicLeaf({ x, y, size, rotation });
   }
+
 }

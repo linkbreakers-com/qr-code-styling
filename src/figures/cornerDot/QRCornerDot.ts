@@ -32,6 +32,9 @@ export default class QRCornerDot {
       case cornerDotTypes.teardrop:
         drawFunction = this._drawTeardrop;
         break;
+      case cornerDotTypes.star:
+        drawFunction = this._drawStar;
+        break;
       case cornerDotTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -175,5 +178,33 @@ export default class QRCornerDot {
 
   _drawTeardrop({ x, y, size, rotation }: DrawArgs): void {
     this._basicTeardrop({ x, y, size, rotation });
+  }
+
+  _basicStar(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const cx = x + size / 2;
+    const cy = y + size / 2;
+    const outerRadius = size / 2;
+    const innerRadius = outerRadius * 0.45;
+
+    this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+    const points = 10;
+    const step = Math.PI / 5;
+    let path = "";
+    for (let i = 0; i < points; i++) {
+      const r = i % 2 === 0 ? outerRadius : innerRadius;
+      const angle = -Math.PI / 2 + i * step;
+      const px = cx + r * Math.cos(angle);
+      const py = cy + r * Math.sin(angle);
+      path += `${i === 0 ? "M" : " L"} ${px} ${py}`;
+    }
+    path += " Z";
+
+    this._element.setAttribute("d", path);
+  }
+
+  _drawStar({ x, y, size, rotation }: DrawArgs): void {
+    this._basicStar({ x, y, size, rotation: 0 });
   }
 }

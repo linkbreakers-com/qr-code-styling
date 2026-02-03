@@ -17,7 +17,7 @@ export type DotType =
   | "extra-rounded"
   | "hexagon"
   | "octagon";
-export type CornerDotType = "dot" | "square" | "hexagon" | "octagon" | "teardrop" | DotType;
+export type CornerDotType = "dot" | "square" | "hexagon" | "octagon" | "teardrop" | "star" | DotType;
 export type CornerSquareType = "dot" | "square" | "extra-rounded" | "hexagon" | "octagon" | "leaf" | DotType;
 export type FileExtension = "svg" | "png" | "jpeg" | "webp";
 export type GradientType = "radial" | "linear";
