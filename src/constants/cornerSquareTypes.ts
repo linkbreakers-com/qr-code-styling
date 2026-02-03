@@ -5,5 +5,6 @@ export default {
   square: "square",
   extraRounded: "extra-rounded",
   hexagon: "hexagon",
-  octagon: "octagon"
+  octagon: "octagon",
+  leaf: "leaf"
 } as CornerSquareTypes;

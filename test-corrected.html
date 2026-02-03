@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrected Leaf & Teardrop - Based on SVG</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .qr-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .qr-box h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .timestamp {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Leaf & Teardrop Corner Styles (Corrected)</h1>
+    <div class="timestamp">Generated: <span id="time"></span></div>
+
+    <div class="container">
+        <div class="qr-box">
+            <h3>Leaf (Outer Ring)</h3>
+            <div id="qr-leaf"></div>
+            <p>cornerSquareOptions: { type: "leaf" }</p>
+        </div>
+
+        <div class="qr-box">
+            <h3>Teardrop (Inner Dot)</h3>
+            <div id="qr-teardrop"></div>
+            <p>cornerDotOptions: { type: "teardrop" }</p>
+        </div>
+
+        <div class="qr-box">
+            <h3>Combined (Leaf + Teardrop)</h3>
+            <div id="qr-both"></div>
+            <p>Both leaf outer ring and teardrop inner dot</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+    </script>
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        // Leaf corner square only
+        new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com/leaf-test",
+            cornerSquareOptions: {
+                color: "#58A366",
+                type: "leaf"
+            },
+            cornerDotOptions: {
+                color: "#2196F3",
+                type: "dot"
+            },
+            dotsOptions: {
+                color: "#333",
+                type: "rounded"
+            }
+        }).append(document.getElementById("qr-leaf"));
+
+        // Teardrop corner dot only
+        new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com/teardrop-test",
+            cornerSquareOptions: {
+                color: "#58A366",
+                type: "dot"
+            },
+            cornerDotOptions: {
+                color: "#57A465",
+                type: "teardrop"
+            },
+            dotsOptions: {
+                color: "#333",
+                type: "rounded"
+            }
+        }).append(document.getElementById("qr-teardrop"));
+
+        // Both combined
+        new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com/combined-test",
+            cornerSquareOptions: {
+                color: "#58A366",
+                type: "leaf"
+            },
+            cornerDotOptions: {
+                color: "#57A465",
+                type: "teardrop"
+            },
+            dotsOptions: {
+                color: "#333",
+                type: "rounded"
+            }
+        }).append(document.getElementById("qr-both"));
+    </script>
+</body>
+</html>

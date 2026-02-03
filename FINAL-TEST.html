@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINAL TEST - Leaf & Teardrop</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 40px;
+            background: #1e1e1e;
+            color: #fff;
+        }
+        .box {
+            background: #2d2d2d;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        h1 { color: #4ec9b0; }
+        h2 { color: #9cdcfe; }
+        #qr { margin: 20px 0; }
+        .info {
+            background: #1e1e1e;
+            padding: 15px;
+            border-left: 3px solid #4ec9b0;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>FINAL TEST - Leaf & Teardrop Corner Styles</h1>
+    <p>Build time check: <script>document.write(Date.now())</script></p>
+
+    <div class="box">
+        <h2>QR Code with Leaf (outer) + Teardrop (inner)</h2>
+        <div id="qr"></div>
+        <div class="info">
+            <strong>Config:</strong><br>
+            cornerSquareOptions: { type: "leaf", color: "#FF0000" }<br>
+            cornerDotOptions: { type: "teardrop", color: "#0000FF" }
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>Console Output</h2>
+        <div id="console" style="background: #1e1e1e; padding: 10px; font-size: 12px;"></div>
+    </div>
+
+    <script>
+        const log = (...args) => {
+            console.log(...args);
+            const div = document.getElementById('console');
+            div.innerHTML += args.join(' ') + '<br>';
+        };
+
+        log('Loading library...');
+    </script>
+
+    <script src="./lib/qr-code-styling.js"></script>
+
+    <script>
+        log('Library loaded successfully');
+        log('Creating QR code...');
+
+        try {
+            const qr = new QRCodeStyling({
+                width: 400,
+                height: 400,
+                data: "https://example.com/test",
+                margin: 10,
+                cornerSquareOptions: {
+                    color: "#FF0000",
+                    type: "leaf"
+                },
+                cornerDotOptions: {
+                    color: "#0000FF",
+                    type: "teardrop"
+                },
+                dotsOptions: {
+                    color: "#FFFFFF",
+                    type: "square"
+                },
+                backgroundOptions: {
+                    color: "#000000"
+                }
+            });
+
+            qr.append(document.getElementById("qr"));
+            log('QR code rendered');
+
+            setTimeout(() => {
+                const svg = document.querySelector('#qr svg');
+                if (svg) {
+                    log('SVG found');
+                    const paths = svg.querySelectorAll('path');
+                    log(`Total paths: ${paths.length}`);
+
+                    // Log first few paths
+                    for(let i = 0; i < Math.min(5, paths.length); i++) {
+                        const d = paths[i].getAttribute('d');
+                        log(`Path ${i}: ${d ? d.substring(0, 80) + '...' : 'no d attribute'}`);
+                    }
+                } else {
+                    log('ERROR: No SVG element found!');
+                }
+            }, 100);
+        } catch(e) {
+            log('ERROR:', e.message);
+        }
+    </script>
+</body>
+</html>

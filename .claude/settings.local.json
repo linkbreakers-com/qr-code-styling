@@ -25,7 +25,12 @@
       "Bash(pnpm ls:*)",
       "Bash(pnpm why:*)",
       "Bash(ln:*)",
-      "Bash(readlink:*)"
+      "Bash(readlink:*)",
+      "Bash(git -C /Users/loschcode/Desktop/work/linkbreakers/qr-code-styling log --all --oneline --grep=\"hexagon\\\\|octagon\")",
+      "Bash(git -C /Users/loschcode/Desktop/work/linkbreakers/qr-code-styling show 4bae131 --stat)",
+      "Bash(git -C /Users/loschcode/Desktop/work/linkbreakers/qr-code-styling show 4bae131 --no-stat)",
+      "Bash(git -C /Users/loschcode/Desktop/work/linkbreakers/qr-code-styling show:*)",
+      "Bash(node:*)"
     ],
     "deny": []
   }

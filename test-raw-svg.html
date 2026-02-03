@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Raw SVG Path Test</title>
+</head>
+<body>
+    <h2>Direct SVG Path Test (should match your reference)</h2>
+
+    <svg width="300" height="300" style="border: 1px solid #ccc;">
+        <!-- Test the exact path I'm generating -->
+        <path d="M 28 0 L 272 0 Q 300 0, 300 28 L 300 272 Q 300 300, 272 300 L 28 300 Q 0 300, 0 272 L 0 28 Q 0 0, 28 0 Z M 42.857142857142854 42.857142857142854 Q 42.857142857142854 42.857142857142854, 42.857142857142854 71.14285714285714 L 42.857142857142854 228.85714285714286 Q 42.857142857142854 257.14285714285717, 71.14285714285714 257.14285714285717 L 228.85714285714286 257.14285714285717 Q 257.14285714285717 257.14285714285717, 257.14285714285717 228.85714285714286 L 257.14285714285717 71.14285714285714 Q 257.14285714285717 42.857142857142854, 228.85714285714286 42.857142857142854 Z"
+              fill="#58A366"
+              fill-rule="evenodd"
+              clip-rule="evenodd"/>
+    </svg>
+
+    <h2>QR Code with library</h2>
+    <div id="qr"></div>
+
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        console.log('Testing leaf/teardrop');
+
+        const qr = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "TEST123",
+            cornerSquareOptions: {
+                color: "#FF0000",
+                type: "leaf"
+            },
+            cornerDotOptions: {
+                color: "#0000FF",
+                type: "teardrop"
+            },
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            }
+        });
+
+        qr.append(document.getElementById("qr"));
+
+        setTimeout(() => {
+            const svg = document.querySelector('#qr svg');
+            console.log('SVG element:', svg);
+            const paths = svg ? svg.querySelectorAll('path') : [];
+            console.log('Total paths:', paths.length);
+
+            // Log corner paths
+            paths.forEach((path, i) => {
+                if (i < 10) {
+                    console.log(`Path ${i}:`, path.getAttribute('d')?.substring(0, 150));
+                }
+            });
+        }, 500);
+    </script>
+</body>
+</html>

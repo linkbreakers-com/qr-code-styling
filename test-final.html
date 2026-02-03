@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Test - Leaf & Teardrop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test {
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Leaf & Teardrop Corner Test</h1>
+    <p>Timestamp: <span id="timestamp"></span></p>
+
+    <div class="test">
+        <h3>Leaf Corner Square</h3>
+        <div id="qr1"></div>
+    </div>
+
+    <div class="test">
+        <h3>Teardrop Corner Dot</h3>
+        <div id="qr2"></div>
+    </div>
+
+    <div class="test">
+        <h3>Both Combined</h3>
+        <div id="qr3"></div>
+    </div>
+
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toISOString();
+    </script>
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        console.log('Script loaded at:', new Date().toISOString());
+
+        // QR 1: Leaf corner square only
+        const qr1 = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://example.com/1",
+            cornerSquareOptions: {
+                color: "#FF0000",
+                type: "leaf"
+            },
+            cornerDotOptions: {
+                color: "#0000FF",
+                type: "dot"
+            },
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            }
+        });
+        qr1.append(document.getElementById("qr1"));
+        console.log('QR1 with leaf corners created');
+
+        // QR 2: Teardrop corner dot only
+        const qr2 = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://example.com/2",
+            cornerSquareOptions: {
+                color: "#FF0000",
+                type: "square"
+            },
+            cornerDotOptions: {
+                color: "#0000FF",
+                type: "teardrop"
+            },
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            }
+        });
+        qr2.append(document.getElementById("qr2"));
+        console.log('QR2 with teardrop corner dots created');
+
+        // QR 3: Both
+        const qr3 = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://example.com/3",
+            cornerSquareOptions: {
+                color: "#FF0000",
+                type: "leaf"
+            },
+            cornerDotOptions: {
+                color: "#0000FF",
+                type: "teardrop"
+            },
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            }
+        });
+        qr3.append(document.getElementById("qr3"));
+        console.log('QR3 with both leaf and teardrop created');
+    </script>
+</body>
+</html>

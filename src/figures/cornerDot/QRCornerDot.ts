@@ -29,6 +29,9 @@ export default class QRCornerDot {
       case cornerDotTypes.octagon:
         drawFunction = this._drawOctagon;
         break;
+      case cornerDotTypes.teardrop:
+        drawFunction = this._drawTeardrop;
+        break;
       case cornerDotTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -42,7 +45,15 @@ export default class QRCornerDot {
     const cy = y + size / 2;
 
     draw();
-    this._element?.setAttribute("transform", `rotate(${(180 * rotation) / Math.PI},${cx},${cy})`);
+    if (!this._element) {
+      return;
+    }
+    const existingTransform = this._element.getAttribute("transform");
+    const rotationTransform = `rotate(${(180 * rotation) / Math.PI},${cx},${cy})`;
+    this._element.setAttribute(
+      "transform",
+      existingTransform ? `${rotationTransform} ${existingTransform}` : rotationTransform
+    );
   }
 
   _basicDot(args: BasicFigureDrawArgs): void {
@@ -139,5 +150,30 @@ export default class QRCornerDot {
 
   _drawOctagon({ x, y, size, rotation }: DrawArgs): void {
     this._basicOctagon({ x, y, size, rotation });
+  }
+
+  _basicTeardrop(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const viewBoxWidth = 244;
+    const viewBoxHeight = 242;
+    const scaleX = size / viewBoxWidth;
+    const scaleY = size / viewBoxHeight;
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+        this._element.setAttribute(
+          "d",
+          "M116.58 0C135.251 0.0449071 150.432 3.11444 167.717 10.1191C169.72 10.9035 171.724 11.688 173.788 12.4961C185.604 17.3394 197.534 25.7488 207.046 35.8232C229.829 57.6004 244 88.1601 244 122C244 188.131 189.885 241.741 123.13 241.741C77.7812 241.741 38.2648 217.001 17.585 180.401C1.2389 158.462 -0.147139 130.593 0.010735 103.808C0.0117702 100.933 0.0125981 98.059 0.0136646 95.0977C0.0204599 89.0594 0.0358703 83.0216 0.066399 76.9834C0.105093 69.2317 0.113027 61.4803 0.111321 53.7285C0.11208 46.3229 0.131869 38.9173 0.15136 31.5117C0.153874 28.7209 0.156582 25.9291 0.159172 23.0537C0.173585 20.4962 0.188268 17.9387 0.203118 15.3037C0.21173 13.0422 0.220612 10.7802 0.229485 8.4502C0.814541 -1.44238 6.65612 0.762706 15.2676 0.681641C17.9391 0.652642 20.6108 0.623627 23.3633 0.59375C27.7399 0.568717 27.74 0.569484 32.2051 0.543945C34.4319 0.530134 34.4323 0.529716 36.7041 0.515625C44.5869 0.468396 52.4696 0.436178 60.3525 0.415039C68.4321 0.390248 76.5108 0.312847 84.5898 0.222656C90.8489 0.16302 97.1079 0.144781 103.367 0.136719C107.772 0.120584 112.176 0.0607503 116.58 0Z"
+        );
+        this._element.setAttribute("transform", `translate(${x}, ${y}) scale(${scaleX}, ${scaleY})`);
+      }
+    });
+  }
+
+  _drawTeardrop({ x, y, size, rotation }: DrawArgs): void {
+    this._basicTeardrop({ x, y, size, rotation });
   }
 }

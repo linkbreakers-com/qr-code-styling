@@ -32,6 +32,9 @@ export default class QRCornerSquare {
       case cornerSquareTypes.octagon:
         drawFunction = this._drawOctagon;
         break;
+      case cornerSquareTypes.leaf:
+        drawFunction = this._drawLeaf;
+        break;
       case cornerSquareTypes.dot:
       default:
         drawFunction = this._drawDot;
@@ -45,7 +48,15 @@ export default class QRCornerSquare {
     const cy = y + size / 2;
 
     draw();
-    this._element?.setAttribute("transform", `rotate(${(180 * rotation) / Math.PI},${cx},${cy})`);
+    if (!this._element) {
+      return;
+    }
+    const existingTransform = this._element.getAttribute("transform");
+    const rotationTransform = `rotate(${(180 * rotation) / Math.PI},${cx},${cy})`;
+    this._element.setAttribute(
+      "transform",
+      existingTransform ? `${rotationTransform} ${existingTransform}` : rotationTransform
+    );
   }
 
   _basicDot(args: BasicFigureDrawArgs): void {
@@ -229,5 +240,31 @@ export default class QRCornerSquare {
 
   _drawOctagon({ x, y, size, rotation }: DrawArgs): void {
     this._basicOctagon({ x, y, size, rotation });
+  }
+
+  _basicLeaf(args: BasicFigureDrawArgs): void {
+    const { size, x, y } = args;
+    const viewBoxWidth = 244;
+    const viewBoxHeight = 246;
+    const scaleX = size / viewBoxWidth;
+    const scaleY = size / viewBoxHeight;
+
+    this._rotateFigure({
+      ...args,
+      draw: () => {
+        this._element = this._window.document.createElementNS("http://www.w3.org/2000/svg", "path");
+        this._element.setAttribute("clip-rule", "evenodd");
+        this._element.setAttribute("fill-rule", "evenodd");
+        this._element.setAttribute(
+          "d",
+          "M174 0C212.66 0.00000206163 244 31.3401 244 70V246H70C31.3401 246 0 214.66 0 176V0H174ZM27 27V169C27 196.614 49.3858 219 77 219H217V77C217 49.3858 194.614 27 167 27H27Z"
+        );
+        this._element.setAttribute("transform", `translate(${x}, ${y}) scale(${scaleX}, ${scaleY})`);
+      }
+    });
+  }
+
+  _drawLeaf({ x, y, size, rotation }: DrawArgs): void {
+    this._basicLeaf({ x, y, size, rotation });
   }
 }

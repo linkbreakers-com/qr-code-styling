@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Leaf & Teardrop Corners</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .qr-container {
+            text-align: center;
+        }
+        .qr-container h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="qr-container">
+        <h3>Leaf Corners (Outer Ring)</h3>
+        <div id="qr-leaf"></div>
+    </div>
+
+    <div class="qr-container">
+        <h3>Teardrop Corners (Inner Dot)</h3>
+        <div id="qr-teardrop"></div>
+    </div>
+
+    <div class="qr-container">
+        <h3>Both Leaf & Teardrop</h3>
+        <div id="qr-both"></div>
+    </div>
+
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        // Test with leaf corner square
+        const qrLeaf = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com",
+            dotsOptions: {
+                color: "#4CAF50",
+                type: "rounded"
+            },
+            cornersSquareOptions: {
+                color: "#2196F3",
+                type: "leaf"
+            },
+            cornersDotOptions: {
+                color: "#FF5722",
+                type: "dot"
+            }
+        });
+        qrLeaf.append(document.getElementById("qr-leaf"));
+
+        // Test with teardrop corner dot
+        const qrTeardrop = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com",
+            dotsOptions: {
+                color: "#4CAF50",
+                type: "rounded"
+            },
+            cornersSquareOptions: {
+                color: "#2196F3",
+                type: "dot"
+            },
+            cornersDotOptions: {
+                color: "#FF5722",
+                type: "teardrop"
+            }
+        });
+        qrTeardrop.append(document.getElementById("qr-teardrop"));
+
+        // Test with both
+        const qrBoth = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://github.com",
+            dotsOptions: {
+                color: "#4CAF50",
+                type: "rounded"
+            },
+            cornersSquareOptions: {
+                color: "#2196F3",
+                type: "leaf"
+            },
+            cornersDotOptions: {
+                color: "#FF5722",
+                type: "teardrop"
+            }
+        });
+        qrBoth.append(document.getElementById("qr-both"));
+    </script>
+</body>
+</html>

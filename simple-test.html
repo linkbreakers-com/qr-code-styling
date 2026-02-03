@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+</head>
+<body>
+    <h1>Test 1: Default corners</h1>
+    <div id="qr1" style="border: 2px solid red;"></div>
+
+    <h1>Test 2: Leaf corners</h1>
+    <div id="qr2" style="border: 2px solid blue;"></div>
+
+    <h1>Test 3: Teardrop corners</h1>
+    <div id="qr3" style="border: 2px solid green;"></div>
+
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        console.log('QRCodeStyling:', typeof QRCodeStyling);
+
+        // Test 1: Default
+        try {
+            const qr1 = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                data: "TEST1"
+            });
+            qr1.append(document.getElementById("qr1"));
+            console.log('QR1 created');
+        } catch(e) {
+            console.error('QR1 error:', e);
+        }
+
+        // Test 2: Leaf
+        try {
+            const qr2 = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                data: "TEST2",
+                cornerSquareOptions: {
+                    type: "leaf",
+                    color: "#FF0000"
+                }
+            });
+            qr2.append(document.getElementById("qr2"));
+            console.log('QR2 created');
+        } catch(e) {
+            console.error('QR2 error:', e);
+        }
+
+        // Test 3: Teardrop
+        try {
+            const qr3 = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                data: "TEST3",
+                cornerDotOptions: {
+                    type: "teardrop",
+                    color: "#0000FF"
+                }
+            });
+            qr3.append(document.getElementById("qr3"));
+            console.log('QR3 created');
+        } catch(e) {
+            console.error('QR3 error:', e);
+        }
+
+        setTimeout(() => {
+            const svgs = document.querySelectorAll('svg');
+            console.log('Total SVG elements:', svgs.length);
+        }, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><title>Error Check</title></head>
+<body style="padding: 40px; font-family: monospace;">
+    <h1>Error Check</h1>
+    <div id="output"></div>
+    <div id="qr"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        const log = (msg) => {
+            console.log(msg);
+            output.innerHTML += msg + '<br>';
+        };
+
+        // Catch all errors
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            log('ERROR: ' + msg);
+            log('Line: ' + lineNo + ', Column: ' + columnNo);
+            log('Stack: ' + (error ? error.stack : 'no stack'));
+            return false;
+        };
+
+        log('Loading library...');
+    </script>
+
+    <script src="./lib/qr-code-styling.js"></script>
+
+    <script>
+        log('Library loaded');
+        log('QRCodeStyling type: ' + typeof QRCodeStyling);
+
+        try {
+            // First test: Basic QR with no custom types
+            log('Test 1: Creating basic QR...');
+            const qr1 = new QRCodeStyling({
+                width: 200,
+                height: 200,
+                data: "TEST"
+            });
+            log('Basic QR created successfully');
+            qr1.append(document.getElementById("qr"));
+            log('Basic QR appended');
+
+            setTimeout(() => {
+                const svg = document.querySelector('#qr svg');
+                log('SVG found: ' + (svg ? 'YES' : 'NO'));
+
+                if (!svg) {
+                    log('Checking if canvas instead...');
+                    const canvas = document.querySelector('#qr canvas');
+                    log('Canvas found: ' + (canvas ? 'YES' : 'NO'));
+                }
+            }, 500);
+
+        } catch(e) {
+            log('EXCEPTION: ' + e.message);
+            log('Stack: ' + e.stack);
+        }
+    </script>
+</body>
+</html>

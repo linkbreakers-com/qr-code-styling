@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head><title>Inspect Paths</title></head>
+<body style="padding: 40px; font-family: monospace; font-size: 12px;">
+    <h1>Path Inspector</h1>
+    <div id="qr"></div>
+    <div id="output" style="margin-top: 20px; background: #f0f0f0; padding: 15px;"></div>
+
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        const output = document.getElementById('output');
+        const log = (msg) => {
+            console.log(msg);
+            output.innerHTML += msg + '<br>';
+        };
+
+        const qr = new QRCodeStyling({
+            width: 400,
+            height: 400,
+            data: "TEST",
+            type: "svg",
+            cornerSquareOptions: {
+                type: "leaf",
+                color: "#FF0000"
+            },
+            cornerDotOptions: {
+                type: "teardrop",
+                color: "#0000FF"
+            },
+            dotsOptions: {
+                color: "#000000",
+                type: "square"
+            }
+        });
+
+        qr.append(document.getElementById("qr"));
+
+        setTimeout(() => {
+            const svg = document.querySelector('#qr svg');
+            if (!svg) {
+                log('No SVG found');
+                return;
+            }
+
+            const paths = svg.querySelectorAll('path');
+            log(`Total paths: ${paths.length}\n`);
+
+            // Find red paths (corner squares) and blue paths (corner dots)
+            log('=== RED PATHS (Corner Squares - should be leaf) ===');
+            let redCount = 0;
+            paths.forEach((path, i) => {
+                const fill = path.getAttribute('fill');
+                const stroke = path.getAttribute('stroke');
+                const color = fill || stroke;
+
+                if (color && (color.includes('FF0000') || color === 'red' || color === '#FF0000')) {
+                    redCount++;
+                    const d = path.getAttribute('d');
+                    log(`Red path ${redCount}: ${d ? d.substring(0, 150) : 'no d'}...`);
+                }
+            });
+
+            log(`\n=== BLUE PATHS (Corner Dots - should be teardrop) ===`);
+            let blueCount = 0;
+            paths.forEach((path, i) => {
+                const fill = path.getAttribute('fill');
+                const stroke = path.getAttribute('stroke');
+                const color = fill || stroke;
+
+                if (color && (color.includes('0000FF') || color === 'blue' || color === '#0000FF')) {
+                    blueCount++;
+                    const d = path.getAttribute('d');
+                    log(`Blue path ${blueCount}: ${d ? d.substring(0, 150) : 'no d'}...`);
+                }
+            });
+
+            log(`\nTotal red (corner square): ${redCount}`);
+            log(`Total blue (corner dot): ${blueCount}`);
+        }, 500);
+    </script>
+</body>
+</html>

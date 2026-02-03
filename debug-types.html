@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head><title>Debug Types</title></head>
+<body style="padding: 40px; font-family: monospace;">
+    <h1>Debug Type Matching</h1>
+    <div id="output"></div>
+    <div id="qr" style="margin-top: 20px;"></div>
+
+    <script src="./lib/qr-code-styling.js"></script>
+    <script>
+        const output = document.getElementById('output');
+        const log = (msg) => {
+            console.log(msg);
+            output.innerHTML += msg + '<br>';
+        };
+
+        log('Creating QR with leaf corner...');
+
+        const options = {
+            width: 300,
+            height: 300,
+            data: "TEST",
+            cornerSquareOptions: {
+                type: "leaf",
+                color: "#FF0000"
+            },
+            cornerDotOptions: {
+                type: "teardrop",
+                color: "#0000FF"
+            }
+        };
+
+        log('Options: ' + JSON.stringify(options, null, 2));
+
+        const qr = new QRCodeStyling(options);
+        qr.append(document.getElementById("qr"));
+
+        setTimeout(() => {
+            const svg = document.querySelector('#qr svg');
+            if (!svg) {
+                log('ERROR: No SVG found!');
+                return;
+            }
+
+            log('SVG found!');
+
+            const paths = svg.querySelectorAll('path');
+            log('Total paths: ' + paths.length);
+
+            // Check for paths with rounded corners (should have Q commands for quadratic curves)
+            let roundedCount = 0;
+            paths.forEach((path, i) => {
+                const d = path.getAttribute('d');
+                if (d && d.includes(' Q ')) {
+                    roundedCount++;
+                    if (i < 5) {
+                        log(`Path ${i} has Q command (rounded): ${d.substring(0, 100)}...`);
+                    }
+                }
+            });
+
+            log(`\nPaths with Q commands (rounded corners): ${roundedCount}`);
+
+            if (roundedCount === 0) {
+                log('WARNING: No rounded paths found! The leaf/teardrop shapes are not rendering.');
+            } else {
+                log('SUCCESS: Rounded paths found!');
+            }
+        }, 500);
+    </script>
+</body>
+</html>

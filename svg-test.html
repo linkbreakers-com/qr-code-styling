@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>SVG Path Test</title></head>
+<body style="background: #f0f0f0; padding: 40px;">
+    <h2>Direct SVG Test - Rounded Square with Ring</h2>
+    <p>This is what the leaf corner SHOULD look like:</p>
+
+    <svg width="300" height="300" style="background: white; border: 1px solid #ccc;">
+        <!-- Simulate a 300x300 corner with dotSize = 300/7 ≈ 42.857 -->
+        <!-- Outer radius = 300 * 0.28 = 84 -->
+        <!-- Inner starts at 42.857, size = 214.286, radius = 214.286 * 0.28 ≈ 60 -->
+
+        <path d="M 84 0 L 216 0 Q 300 0, 300 84 L 300 216 Q 300 300, 216 300 L 84 300 Q 0 300, 0 216 L 0 84 Q 0 0, 84 0 Z M 102.857 42.857 Q 42.857 42.857, 42.857 102.857 L 42.857 197.143 Q 42.857 257.143, 102.857 257.143 L 197.143 257.143 Q 257.143 257.143, 257.143 197.143 L 257.143 102.857 Q 257.143 42.857, 197.143 42.857 Z"
+              fill="#58A366"
+              fill-rule="evenodd"
+              clip-rule="evenodd"/>
+    </svg>
+
+    <h2>Should be a rounded square ring (like your reference)</h2>
+    <p>If you see a perfect rounded square ring above, the SVG path math is correct.</p>
+    <p>If the QR library shows sharp squares, there might be a rendering issue.</p>
+</body>
+</html>
