@@ -3,125 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Leaf & Teardrop Corners</title>
+    <title>QR Corner Shape QA</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
+            background: #f6f6f6;
+            color: #111;
         }
-        .qr-container {
+        h1 {
+            margin: 0 0 16px;
+            font-size: 22px;
+        }
+        h2 {
+            margin: 24px 0 12px;
+            font-size: 18px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .qr-card {
             text-align: center;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 12px 10px 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
-        .qr-container h3 {
-            margin-bottom: 10px;
+        .qr-card h3 {
+            margin: 8px 0 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="qr-container">
-        <h3>Leaf Corners (Outer Ring)</h3>
-        <div id="qr-leaf"></div>
-    </div>
+    <h1>QR Corner Shape QA</h1>
 
-    <div class="qr-container">
-        <h3>Teardrop Corners (Inner Dot)</h3>
-        <div id="qr-teardrop"></div>
-    </div>
+    <h2>Corner Square Types (Outer)</h2>
+    <div id="corner-square-grid" class="grid"></div>
 
-    <div class="qr-container">
-        <h3>Both Leaf & Teardrop</h3>
-        <div id="qr-both"></div>
-    </div>
-
-    <div class="qr-container">
-        <h3>Star Corners (Outer & Inner)</h3>
-        <div id="qr-star"></div>
-    </div>
+    <h2>Corner Dot Types (Inner)</h2>
+    <div id="corner-dot-grid" class="grid"></div>
 
     <script src="./lib/qr-code-styling.js"></script>
     <script>
-        // Test with leaf corner square
-        const qrLeaf = new QRCodeStyling({
-            width: 300,
-            height: 300,
+        const baseOptions = {
+            width: 220,
+            height: 220,
             data: "https://github.com",
             dotsOptions: {
-                color: "#4CAF50",
+                color: "#2E7D32",
                 type: "rounded"
             },
             cornersSquareOptions: {
-                color: "#2196F3",
-                type: "leaf"
-            },
-            cornersDotOptions: {
-                color: "#FF5722",
-                type: "dot"
-            }
-        });
-        qrLeaf.append(document.getElementById("qr-leaf"));
-
-        // Test with teardrop corner dot
-        const qrTeardrop = new QRCodeStyling({
-            width: 300,
-            height: 300,
-            data: "https://github.com",
-            dotsOptions: {
-                color: "#4CAF50",
-                type: "rounded"
-            },
-            cornersSquareOptions: {
-                color: "#2196F3",
-                type: "dot"
-            },
-            cornersDotOptions: {
-                color: "#FF5722",
-                type: "teardrop"
-            }
-        });
-        qrTeardrop.append(document.getElementById("qr-teardrop"));
-
-        // Test with both
-        const qrBoth = new QRCodeStyling({
-            width: 300,
-            height: 300,
-            data: "https://github.com",
-            dotsOptions: {
-                color: "#4CAF50",
-                type: "rounded"
-            },
-            cornersSquareOptions: {
-                color: "#2196F3",
-                type: "leaf"
-            },
-            cornersDotOptions: {
-                color: "#FF5722",
-                type: "teardrop"
-            }
-        });
-        qrBoth.append(document.getElementById("qr-both"));
-
-        // Test with star corner square & dot
-        const qrStar = new QRCodeStyling({
-            width: 300,
-            height: 300,
-            data: "https://github.com",
-            dotsOptions: {
-                color: "#4CAF50",
-                type: "rounded"
-            },
-            cornersSquareOptions: {
-                color: "#2196F3",
+                color: "#1565C0",
                 type: "square"
             },
             cornersDotOptions: {
-                color: "#FF5722",
-                type: "star"
+                color: "#D84315",
+                type: "dot"
             }
+        };
+
+        const cornerSquareTypes = ["dot", "square", "extra-rounded", "hexagon", "octagon", "leaf"];
+        const cornerDotTypes = ["dot", "square", "hexagon", "octagon", "teardrop", "star"];
+
+        const createCard = (label, containerId) => {
+            const card = document.createElement("div");
+            card.className = "qr-card";
+            const title = document.createElement("h3");
+            title.textContent = label;
+            const slot = document.createElement("div");
+            slot.id = containerId;
+            card.appendChild(title);
+            card.appendChild(slot);
+            return card;
+        };
+
+        const squareGrid = document.getElementById("corner-square-grid");
+        cornerSquareTypes.forEach((type) => {
+            const id = `corner-square-${type}`;
+            squareGrid.appendChild(createCard(type, id));
+            const qr = new QRCodeStyling({
+                ...baseOptions,
+                cornersSquareOptions: {
+                    ...baseOptions.cornersSquareOptions,
+                    type
+                },
+                cornersDotOptions: {
+                    ...baseOptions.cornersDotOptions,
+                    type: "dot"
+                }
+            });
+            qr.append(document.getElementById(id));
         });
-        qrStar.append(document.getElementById("qr-star"));
+
+        const dotGrid = document.getElementById("corner-dot-grid");
+        cornerDotTypes.forEach((type) => {
+            const id = `corner-dot-${type}`;
+            dotGrid.appendChild(createCard(type, id));
+            const qr = new QRCodeStyling({
+                ...baseOptions,
+                cornersSquareOptions: {
+                    ...baseOptions.cornersSquareOptions,
+                    type: "square"
+                },
+                cornersDotOptions: {
+                    ...baseOptions.cornersDotOptions,
+                    type
+                }
+            });
+            qr.append(document.getElementById(id));
+        });
     </script>
 </body>
 </html>
